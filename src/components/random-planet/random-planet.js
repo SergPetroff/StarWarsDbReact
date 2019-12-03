@@ -16,6 +16,17 @@ constructor(){
   super();
   this.updatePlanet();
 }
+
+componentDidMount(){
+    this.updatePlanet();
+    this.interval = setInterval(this.updatePlanet,5000);
+}
+
+
+//Методо который вызывается перед удалением компонента!
+componentWillMount(){
+  clearInterval(this.interval);
+}
 onPlanetLoaded = (planet)=>{
   this.setState({
     planet,
@@ -28,7 +39,7 @@ onError=()=>{
    loading:false
  });
 };
-updatePlanet(){
+updatePlanet=()=>{
   const id=Math.floor( Math.random()*25+2);
   this.swapiService
   .getPlanet(id)
