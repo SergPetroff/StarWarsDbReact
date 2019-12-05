@@ -3,7 +3,7 @@ export default class SwapiService {
     _prourl = "https://cors-anywhere.herokuapp.com/";
     _apibase = "https://swapi.co/api";
     
- async getRescource(url){
+  getRescource = async(url)=>{
      const res = await fetch(`${this._apibase}${url}`);
      if(!res.ok){
          throw new Error(`Could not fetch ${url}`+`, received ${res.status}`)
@@ -11,39 +11,39 @@ export default class SwapiService {
      return await res.json();
  }
 
- async getAllPeople(){
+  getAllPeople=async()=>{
     const res = await this.getRescource(`/people/`);
 
     return res.results.map(this._trancformPerson);
  }
- async getPerson(id){
+  getPerson=async(id)=>{
      const person = await this.getRescource(`/people/${id}`);
      return this._trancformPerson(person);
  }
 
- async getAllPLanets(){
+ getAllPlanets=async()=>{
     const res = await this.getRescource(`/planets/`);
 
     return res.results.map(this._transformPlanet);
  }
-async getPlanet(id){
+getPlanet=async(id)=>{
    const planet = await this.getRescource(`/planets/${id}`);
 
    return this._transformPlanet(planet)
 }
 
-async getAllStarships(){
+getAllStarships=async()=>{
     const res = await this.getRescource(`/starships/`);
 
     return res.results.map(this._transformStarship);
  }
 
- async getStarships(id){
-    const starship = await this.getRescource(`/starships/${id}`);
+ getStarships=async(id)=>{
+    const starship =  this.getRescource(`/starships/${id}`);
     return this._transformStarship(starship);
 }
 
-_extractId(item){
+_extractId=(item)=>{
     const idRegExp = /\/([0-9]*)\/$/;
     return  item.url.match(idRegExp)[1]
 }
@@ -77,7 +77,7 @@ _trancformPerson=(person)=>{
         id:this._extractId(person),
         name:person.name,
         gender:person.gender,
-        birthYear:person.birthYear,
+        birthYear:person.birth_year,
         eyeColor:person.eyeColor
     }
 }
