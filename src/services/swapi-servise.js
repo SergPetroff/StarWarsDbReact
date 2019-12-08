@@ -2,6 +2,7 @@ export default class SwapiService {
 
     _prourl = "https://cors-anywhere.herokuapp.com/";
     _apibase = "https://swapi.co/api";
+    _imageBase = 'https://starwars-visualguide.com/assets/img';
     
   getRescource = async(url)=>{
      const res = await fetch(`${this._apibase}${url}`);
@@ -38,11 +39,21 @@ getAllStarships=async()=>{
     return res.results.map(this._transformStarship);
  }
 
- getStarships=async(id)=>{
-    const starship =  this.getRescource(`/starships/${id}`);
+ getStarship=async(id)=>{
+    const starship =  await this.getRescource(`/starships/${id}`);
     return this._transformStarship(starship);
 }
 
+getPersonImage=({id})=>{
+    return `${this._imageBase}/characters/${id}.jpg`
+}
+
+getStarshipImage=({id})=>{
+    return `${this._imageBase}/starships/${id}.jpg`
+}
+getPlanetsImage=({id})=>{
+    return `${this._imageBase}/planets/${id}.jpg`
+}
 _extractId=(item)=>{
     const idRegExp = /\/([0-9]*)\/$/;
     return  item.url.match(idRegExp)[1]
@@ -64,8 +75,8 @@ _transformStarship=(starship)=>{
         name:starship.name,
         model:starship.model,
         manufactured:starship.manufactured,
-        costInCredits:starship.costInCredits,
-        lenght:starship.lenght,
+        costInCredits:starship.cost_in_credits,
+        length:starship.length,
         crew:starship.crew,
         passengers:starship.passengers,
         cargoCapacity:starship.cargoCapacity
@@ -78,7 +89,7 @@ _trancformPerson=(person)=>{
         name:person.name,
         gender:person.gender,
         birthYear:person.birth_year,
-        eyeColor:person.eyeColor
+        eyeColor:person.eye_color
     }
 }
 }

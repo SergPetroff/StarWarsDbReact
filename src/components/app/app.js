@@ -2,14 +2,21 @@ import React,{Component} from 'react';
 
 import Header from '../header';
 import RandomPlanet from '../random-planet';
-import PeoplePage from '../people-page';
-import ErrorButton from '../error-button';
-import ItemList from '../item-list/item-list';
-import PersonDetails from '../person-details';
+import ItemDetails,{Record} from '../item-details';
 import './app.css';
 import SwapiService from '../../services/swapi-servise';
 import ErrorIndicator from '../error-indicator';
+import ErrorBoundry from '../errorBoundry';
 
+
+import{
+  PersonDetails,
+  PlnaetDetails,
+  StarshipDetails,
+  PersonList,
+  PlnaetList,
+  StarshipList
+} from '../sw-components';
 
 export default class App extends Component{
 
@@ -42,9 +49,28 @@ export default class App extends Component{
     }
     const planet = this.state.showRandomPlanet?
     <RandomPlanet/>:null;
+
     return (
-      <div className="stardb-app">
+
+      <ErrorBoundry>
+        <div className="stardb-app">
         <Header />
+
+        <PersonDetails ItemId = {11}/>
+        <StarshipDetails ItemId = {11}/>
+        <PlnaetDetails ItemId = {11}/>
+          <PersonList>
+            {({name})=><span>{name}</span>}
+          </PersonList>
+          <StarshipList>
+            {({name})=><span>{name}</span>}
+          </StarshipList>
+          <PlnaetList>
+            {({name})=><span>{name}</span>}
+          </PlnaetList>
+        </div>
+      </ErrorBoundry>
+       /*
         { planet }
         <div className="row mb2 button-row">
           <button
@@ -63,7 +89,7 @@ export default class App extends Component{
               renderItem = {(item)=>item.name}/>
           </div>
           <div className="col-md-6">
-            <PersonDetails personId={this.state.selectedPerson} />
+            <ItemDetails personId={this.state.selectedPerson} />
           </div>
         </div>
         <div className="row mb2">
@@ -75,12 +101,12 @@ export default class App extends Component{
                />
           </div>
           <div className="col-md-6">
-            <PersonDetails personId={this.state.selectedPerson} />
+            <ItemDetails personId={this.state.selectedPerson} />
           </div>
-        </div>
+        </div> 
       
        
-      </div>
+      </div>*/
     );
   }
 };
