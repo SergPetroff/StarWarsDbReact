@@ -28,21 +28,23 @@ export default class ItemDetails extends Component {
   };
 
   componentDidMount(){
-    this.updatePerson();
+    this.updateItem();
   };
 
 
   componentDidUpdate(prevProps){
-    if(this.props.personId!== prevProps.personId){
-      this.updatePerson();
+    if (this.props.itemId !== prevProps.itemId ||
+      this.props.getData !== prevProps.getData ||
+      this.props.getImageUrl !== prevProps.getImageUrl) {
+      this.updateItem();
     }
   }
-  updatePerson(){
-    const {itemId, getData, getImageUrl} = this.props;
-    if(!itemId){
+  updateItem(){
+    const {ItemId, getData, getImageUrl} = this.props;
+    if(!ItemId){
       return;
     }
-    getData(itemId)
+    getData(ItemId)
     .then((item)=>{
       this.setState({
         item,
@@ -52,15 +54,13 @@ export default class ItemDetails extends Component {
   };
 
   render() {
-
+    const {item,image} = this.state;
+  
     if(!this.state.item){
       return <span>Select a person from a list</span>;
     }
     
-    
-    const {item,image} = this.state;
     const {name} = item;
-    //const spinner = loading?<Spinner/>:null;
 
    
     return (
