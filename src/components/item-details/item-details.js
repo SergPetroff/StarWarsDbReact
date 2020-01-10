@@ -1,87 +1,78 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import './item-details.css';
-import SwapiService from '../../services/swapi-servise';
-import Spinner from '../spinner';
-import ErrorButton from '../error-button';
+import "./item-details.css";
+import SwapiService from "../../services/swapi-servise";
+import Spinner from "../spinner";
+import ErrorButton from "../error-button";
 
-
-const Record=({item,field,label})=>{
-  return(
+const Record = ({ item, field, label }) => {
+  return (
     <li className="list-group-item">
-    <span className="term">{label}</span>
-    <span>{item[field]}</span>
-  </li>
-  )
+      <span className="term">{label}</span>
+      <span>{item[field]}</span>
+    </li>
+  );
 };
 
-export {
-  Record
-};
+export { Record };
 
 export default class ItemDetails extends Component {
-
   swapiService = new SwapiService();
-  state={
-    item:null,
-    image:null
+  state = {
+    item: null,
+    image: null
   };
 
-  componentDidMount(){
+  componentDidMount() {
     this.updateItem();
-  };
+  }
 
-
-  componentDidUpdate(prevProps){
-    if (this.props.itemId !== prevProps.itemId ||
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.ItemId !== prevProps.ItemId ||
       this.props.getData !== prevProps.getData ||
-      this.props.getImageUrl !== prevProps.getImageUrl) {
+      this.props.getImageUrl !== prevProps.getImageUrl
+    ) {
       this.updateItem();
     }
   }
-  updateItem(){
-    const {ItemId, getData, getImageUrl} = this.props;
-    if(!ItemId){
+  updateItem() {
+    const { ItemId, getData, getImageUrl } = this.props;
+    if (!ItemId) {
       return;
     }
-    getData(ItemId)
-    .then((item)=>{
+    getData(ItemId).then(item => {
       this.setState({
         item,
-        image:getImageUrl(item)
+        image: getImageUrl(item)
       });
-    })
-  };
+    });
+  }
 
   render() {
-    const {item,image} = this.state;
-  
-    if(!this.state.item){
-      return <span>Select a person from a list</span>;
-    }
-    
-    const {name} = item;
+    console.log(this.state);
+    const { item, image } = this.state;
 
-   
+    if (!this.state.item) {
+      return <span>Select a item from a list</span>;
+    }
+
+    const { name } = item;
+
     return (
       <div className="person-details card">
-      <img className="person-image"
-        src={image}
-        alt="character" />
+        <img className="person-image" src={image} alt="character" />
 
-      <div className="card-body">
-      <h4>{name}</h4>
-        <ul className="list-group list-group-flush">
-          {
-            React.Children.map(this.props.children,(child)=>{
-              return React.cloneElement(child,{item})
-            })
-          }
-        </ul>
-        <ErrorButton/>
+        <div className="card-body">
+          <h4>{name}</h4>
+          <ul className="list-group list-group-flush">
+            {React.Children.map(this.props.children, child => {
+              return React.cloneElement(child, { item });
+            })}
+          </ul>
+          <ErrorButton />
+        </div>
       </div>
-      </div>
-    )
+    );
   }
 }
-
