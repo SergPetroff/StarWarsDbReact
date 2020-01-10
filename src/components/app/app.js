@@ -1,28 +1,28 @@
-import React,{Component} from 'react';
+import React, { Component } from "react";
 
-import Header from '../header';
-import RandomPlanet from '../random-planet';
-import './app.css';
-import SwapiService from '../../services/swapi-servise'
-import ErrorIndicator from '../error-indicator';
-import ErrorBoundry from '../errorBoundry';
-import {SwapiServiceProvider} from '../swapi-service-context';
-import DummySwapiService from '../../services/dummy-swapi-service';
-import {PeoplePage,PlanetPage,StarshipPage} from '../pages';
+import Header from "../header";
+import RandomPlanet from "../random-planet";
+import "./app.css";
+import SwapiService from "../../services/swapi-servise";
+import DummySwapiService from "../../services/dummy-swapi-service";
+import ErrorIndicator from "../error-indicator";
+import ErrorBoundry from "../errorBoundry";
+import { SwapiServiceProvider } from "../swapi-service-context";
+import { PeoplePage, PlanetPage, StarshipPage } from "../pages";
 
-export default class App extends Component{
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-  swapiService = new SwapiService();
+export default class App extends Component {
+  //swapiService = new SwapiService();
+  swapiService = new DummySwapiService();
   state = {
-    showRandomPlanet:true,
-    hasError:false
+    showRandomPlanet: true,
+    hasError: false
   };
 
   toggleRandomPlanet = () => {
-    this.setState((state) => {
-      return {
-       
-      }
+    this.setState(state => {
+      return {};
     });
   };
 
@@ -30,34 +30,33 @@ export default class App extends Component{
     this.setState({ hasError: true });
   }
 
-  onPersonSelected = (id)=>{
+  onPersonSelected = id => {
     this.setState({
-      selectedPerson:id
-    })
-  }
-  render(){
+      selectedPerson: id
+    });
+  };
+  render() {
     if (this.state.hasError) {
-      return <ErrorIndicator />
+      return <ErrorIndicator />;
     }
 
-
     return (
-
       <ErrorBoundry>
-        <SwapiServiceProvider value = {this.swapiService}>
-        <div className="stardb-app">
-        <Header />
-        <RandomPlanet/>
-        <PeoplePage/>
-        <PlanetPage/>
-        <StarshipPage/>
-        
-        
+        <SwapiServiceProvider value={this.swapiService}>
+          <Router>
+            <div className="stardb-app">
+              <Header />
 
-        </div>
+              <RandomPlanet />
+              <Route path="/" render={() => <h2>Welcome to StarDB</h2>} exact />
+              <Route path="/people" component={PeoplePage} />
+              <Route path="/planets" component={PlanetPage} />
+              <Route path="/starships" component={StarshipPage} />
+            </div>
+          </Router>
         </SwapiServiceProvider>
       </ErrorBoundry>
-       /*
+      /*
         { planet }
         <div className="row mb2 button-row">
           <button
@@ -96,5 +95,4 @@ export default class App extends Component{
       </div>*/
     );
   }
-};
-
+}
